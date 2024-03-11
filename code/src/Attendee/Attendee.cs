@@ -10,6 +10,11 @@ namespace Attendees
         public void WriteToDirectory(ZipArchiveEntry entry, string destDirectory)
         {
             string destFileName = Path.Combine(destDirectory, entry.FullName);
+            string fullDestDirPath = Path.GetFullPath(destDirectory + Path.DirectorySeparatorChar);
+            if (!destFileName.StartsWith(fullDestDirPath))
+            {
+                throw new System.InvalidOperationException("Entry is outside the target dir: " + destFileName);
+            }
             entry.ExtractToFile(destFileName);
         }
         
